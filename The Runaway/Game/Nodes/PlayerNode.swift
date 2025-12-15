@@ -9,10 +9,12 @@ import Foundation
 
 import SpriteKit
 
-class PlayerNode: SKShapeNode {
+class PlayerNode: SKShapeNode
+{
     
     // Player'ı oluştururken çalışacak fonksiyon
-    init(width: CGFloat) {
+    init(width: CGFloat)
+    {
         // 1. Şekil Oluşturma: Bir kare çiziyoruz
         let size = CGSize(width: width, height: width)
         super.init()
@@ -34,12 +36,25 @@ class PlayerNode: SKShapeNode {
         self.physicsBody?.restitution = 0.0          // Zıplama yok (Yere yapışsın)
         self.physicsBody?.linearDamping = 0.0        // Hava direnci yok
         
+        // 1. Benim kategorim (Kimliğim) ne? -> Player
+        self.physicsBody?.categoryBitMask = PhysicsCategories.player
+                
+        // 2. Kiminle çarpışınca fiziksel tepki vereyim? (Takılayım/İteyim) -> Zemin (Ground)
+        // (Engellere fiziksel çarpmasın, içinden geçerken oyun bitsin istiyorsak buraya obstacle yazmayız.
+        // Ama "küt" diye çarpması için obstacle da ekleyebilirim. Şimdilik sadece ground kalsın.)
+        self.physicsBody?.collisionBitMask = PhysicsCategories.ground
+                
+        // 3. Kiminle temas edince "Haber Ver"? -> Engel (Obstacle)
+        // (Fiziksel çarpışmasa bile dokunduğu an GameScene'e haber uçurur)
+        self.physicsBody?.contactTestBitMask = PhysicsCategories.obstacle
+        
         // İsimlendirme (Daha sonra kodda bulmak için)
         self.name = "Player"
     }
     
     // Bu kısım zorunlu (Swift'in kuralı)
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder)
+    {
         fatalError("init(coder:) has not been implemented")
     }
 }

@@ -9,10 +9,12 @@ import Foundation
 
 import SpriteKit
 
-class ObstacleNode: SKShapeNode {
+class ObstacleNode: SKShapeNode
+{
     
     // Engel oluştururken genişlik ve yükseklik isteyeceğiz
-    init(width: CGFloat, height: CGFloat) {
+    init(width: CGFloat, height: CGFloat)
+    {
         let size = CGSize(width: width, height: height)
         super.init()
         
@@ -31,11 +33,16 @@ class ObstacleNode: SKShapeNode {
         self.physicsBody?.isDynamic = false // DİKKAT: Engel hareket etmez, olduğu yerde çivi gibi durur.
         self.physicsBody?.friction = 0.0
         self.physicsBody?.restitution = 0.0
+        self.physicsBody?.categoryBitMask = PhysicsCategories.obstacle
+        //son eklediklerim.
+        self.physicsBody?.collisionBitMask = PhysicsCategories.none // Engel kimseyle fiziksel itişmesin (Duvar gibi dursun)
+        self.physicsBody?.contactTestBitMask = PhysicsCategories.player // Player bana değerse haber ver
         
         self.name = "Obstacle"
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder)
+    {
         fatalError("init(coder:) has not been implemented")
     }
 }
