@@ -10,37 +10,29 @@ import Foundation
 
 import SpriteKit
 
-// DİKKAT: Artık SKShapeNode değil, SKSpriteNode kullanıyoruz!
 class PlayerNode: SKSpriteNode {
     
-    // init fonksiyonu artık resim adını da alıyor
     init(imageNamed: String, width: CGFloat) {
-        // Görseli yükle
         let texture = SKTexture(imageNamed: imageNamed)
-        // Görselin boyutunu ayarla (kare olacak şekilde)
-        let size = CGSize(width: width, height: width)
         
-        // SKSpriteNode'un kendi başlatıcısını çağır
-        super.init(texture: texture, color: .clear, size: size)
+        // 1. GÖRSEL BOYUT (Gözün gördüğü)
+        // Burası dışarıdan gelen 'width' değerini kullanır (Örn: 120)
+        let visualSize = CGSize(width: width, height: width)
         
-        // DEĞİŞİKLİK BURADA
-                // Virüsün dikenlerini saymayalım, sadece gövdesi çarpınca yansın.
-                // Kutuyu %50 oranında küçülttüm.
-                let hitboxSize = CGSize(width: width * 0.5, height: width * 0.5)
-                
-                self.physicsBody = SKPhysicsBody(rectangleOf: hitboxSize)
-                
+        super.init(texture: texture, color: .clear, size: visualSize)
         
-        /*
-        // Görsel Ayarlar (Neon Efekti Kodla Değil, Resimden Geliyor)
-        // Ancak hafif bir ekstra parlama ekleyebiliriz (Opsiyonel)
-        // self.color = .cyan
-        // self.colorBlendFactor = 0.2
-         */
+        // 2. FİZİKSEL BOYUT (Oyunun gördüğü)
+        // Burayı görselden tamamen bağımsız, elle yazıyoruz.
+        // Görsel 120 olsa bile, buraya 30 yazarsak, hitbox küçücük kalır.
+         let hitboxSize = CGSize(width: 40, height: 60) // genişlik önemli değil ama yükseklik önemli. 60 iyi.
         
-        // 3. Fizik Ayarları (Aynen kalıyor)
-        // Virüsün şekline göre değil, yine basit bir kare fizik alanı kullanıyoruz (Performans için)
-        self.physicsBody = SKPhysicsBody(rectangleOf: size)
+        // İPUCU: Virüs yuvarlak olduğu için kare yerine "Daire" (Circle) kullanırsak
+        // köşelerden çarpma riski daha da azalır.
+        // self.physicsBody = SKPhysicsBody(circleOfRadius: 32) // 2xYarıçap  = Genişlik. yuvarlak yapınca altlarından geçebiliyor. dikdörtgen olarak ayarlayacağım.
+        
+        // Eğer kare kalsın istiyorsan üstteki satırı sil, bunu aç:
+        self.physicsBody = SKPhysicsBody(rectangleOf: hitboxSize)
+        
         self.physicsBody?.isDynamic = true
         self.physicsBody?.allowsRotation = false
         self.physicsBody?.friction = 0.0
@@ -52,7 +44,7 @@ class PlayerNode: SKSpriteNode {
         self.physicsBody?.contactTestBitMask = PhysicsCategories.obstacle
         
         self.name = "Player"
-        self.zPosition = 2 // Engellerin önünde görünsün
+        self.zPosition = 2
     }
     
     required init?(coder aDecoder: NSCoder) {

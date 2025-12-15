@@ -9,25 +9,27 @@ import Foundation
 import SpriteKit
 
 // DİKKAT: Artık SKShapeNode değil, SKSpriteNode kullanıyoruz!
+import SpriteKit
+
 class ObstacleNode: SKSpriteNode {
     
     init(imageNamed: String, width: CGFloat, height: CGFloat) {
         let texture = SKTexture(imageNamed: imageNamed)
-        let size = CGSize(width: width, height: height)
+        let size = CGSize(width: width, height: height) // GÖRSEL BOYUT (Devasa)
         
-        // Görseli başlat
         super.init(texture: texture, color: .clear, size: size)
         
-        // --- DEĞİŞİKLİK BURADA ---
-                // Görsel boyutu (size) yerine, daha küçük bir fiziksel boyut tanımlıyoruz.
-                // Genişliği %40, yüksekliği %10 kırpıyoruz ki "ucundan" çarpmasın.
-                let hitboxSize = CGSize(width: width * 0.6, height: height * 0.9)
-                
-                self.physicsBody = SKPhysicsBody(rectangleOf: hitboxSize)
+         
+        // Görsel ne kadar büyük olursa olsun, çarpışma kutusunu daraltıyoruz.
+        // width * 0.4 -> Görselin genişliğinin sadece %40'ı kadar katı olsun.
+        // height * 0.9 -> Boydan da azıcık kısalttım.
+        let hitboxSize = CGSize(width: width * 0.2, height: height * 0.8) // 0.4->0.2 , 0.9->0.8
         
-        // Fizik Ayarları (Aynen kalıyor, dikdörtgen)
-        self.physicsBody = SKPhysicsBody(rectangleOf: size)
-        self.physicsBody?.isDynamic = false // Çivi gibi çakılı
+        // Fizik gövdesini görsel boyuta (size) göre değil, bu yeni hitboxSize'a göre kuruyoruz
+        self.physicsBody = SKPhysicsBody(rectangleOf: hitboxSize)
+        
+        
+        self.physicsBody?.isDynamic = false
         self.physicsBody?.friction = 0.0
         self.physicsBody?.restitution = 0.0
         
@@ -36,10 +38,11 @@ class ObstacleNode: SKSpriteNode {
         self.physicsBody?.contactTestBitMask = PhysicsCategories.player
         
         self.name = "Obstacle"
-        self.zPosition = 1 // Arka planın önünde, oyuncunun arkasında
+        self.zPosition = 1
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+    

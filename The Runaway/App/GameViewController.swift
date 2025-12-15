@@ -18,6 +18,8 @@ class GameViewController: UIViewController
         
         if let view = self.view as! SKView?
         {
+            
+            /* eski oyun açılışı, yenisinde giriş ekranı var. bunu silme bi dursun
             // Load the SKScene from 'GameScene.sks'
             if let scene = SKScene(fileNamed: "GameScene")
             {
@@ -26,7 +28,16 @@ class GameViewController: UIViewController
                 
                 // Present the scene
                 view.presentScene(scene)
-            }
+            } */
+            
+            // Artık dosya (sks) aramıyoruz, direkt kodla MenuScene yaratıyoruz
+            let scene = MenuScene(size: view.bounds.size)
+            scene.scaleMode = .aspectFill // Ekranı tam kaplasın
+
+            view.presentScene(scene)
+            
+            //şimdilik bi engelleri görünür yap.
+            view.showsPhysics = true
             
             view.ignoresSiblingOrder = true
             
