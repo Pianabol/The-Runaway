@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		BA620CF32EF08E8600EED463 /* The Runaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "The Runaway.app"; path = "/Users/furkantuc/Desktop/Xcode/The Runaway/build/Debug-iphoneos/The Runaway.app"; sourceTree = "<absolute>"; };
+		BA1926422EF59168003D9DA0 /* The Runaway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Runaway.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -33,6 +33,7 @@
 			isa = PBXGroup;
 			children = (
 				BA620CE72EF08D8F00EED463 /* The Runaway */,
+				BA1926422EF59168003D9DA0 /* The Runaway.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,7 +59,7 @@
 			packageProductDependencies = (
 			);
 			productName = "The Runaway";
-			productReference = BA620CF32EF08E8600EED463 /* The Runaway.app */;
+			productReference = BA1926422EF59168003D9DA0 /* The Runaway.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

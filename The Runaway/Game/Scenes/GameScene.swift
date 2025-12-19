@@ -10,14 +10,19 @@
 // arka plan ve engellere görsel eklendi, ayrıca karakterimiz için bir icon getirildi.
 // bu versiyonda oyuna, gittikçe zorlaşan bir tasarım eklendi. Yer çekimi (karakter hızı) da artıyor gittikçe, engellerin geliş hızı da artıyor, spawn oluş hızı da.
 
+//bu versiyon büyük final, sesleri ekleyip testlere hazır bir hale getirilecek
+
 import SpriteKit
 import GameplayKit
+import AVFoundation //sesler
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
+class GameScene: SKScene, SKPhysicsContactDelegate
+{
     
     var player: PlayerNode?
     var scoreLabel: SKLabelNode!
     var background: SKSpriteNode! // Arka planı tutacak değişken
+    var backgroundMusicPlayer: AVAudioPlayer? //music
     
     var isGameOver = false
     var score = 0
@@ -55,6 +60,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createWalls()
         addPlayer()
         setupScoreLabel()
+        playBackgroundMusic() //music başlasın
     }
     
     func adjustDifficulty()
@@ -97,6 +103,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         background.zPosition = -10 // en arkada
         addChild(background)
     }
+    
+    //music
+    func playBackgroundMusic()
+    {
+            // baştan başlat
+            backgroundMusicPlayer?.stop()
+            backgroundMusicPlayer?.currentTime = 0
+            
+            //   "bg_music", wav değil m4a
+            if let musicURL = Bundle.main.url(forResource: "bg_music", withExtension: "m4a") {
+                do {
+                    backgroundMusicPlayer = try AVAudioPlayer(contentsOf: musicURL)
+                    backgroundMusicPlayer?.numberOfLoops = -1 // -1 = Sonsuz döngü
+                    backgroundMusicPlayer?.volume = 0.75 // Ses seviyesi (%50)
+                    backgroundMusicPlayer?.prepareToPlay()
+                    backgroundMusicPlayer?.play()
+                }
+                catch
+                {
+                    print("Müzik çalınamadı: \(error)")
+                }
+            }
+        }
     
     func setupScoreLabel()
     {
@@ -247,6 +276,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         physicsWorld.gravity.dy *= -1
         player?.physicsBody?.applyImpulse(CGVector(dx: 0, dy: physicsWorld.gravity.dy * 2))
+        
+        run(SKAction.playSoundFileNamed("change_dir.wav", waitForCompletion: false))
     }
     
     func didBegin(_ contact: SKPhysicsContact)
@@ -254,6 +285,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         if collision == (PhysicsCategories.player | PhysicsCategories.obstacle)
         {
+            //  bg music durdur
+            backgroundMusicPlayer?.stop()
+                        
+            // hit sesi (shatter.wav) 💥
+            let shatterSound = SKAction.playSoundFileNamed("shatter.wav", waitForCompletion: false)
+                        
+            //  sessizlik/gerilim 0.5 saniye
+            let waitAction = SKAction.wait(forDuration: 0.5)
+                        
+            // detected.wav
+            let detectedVoice = SKAction.playSoundFileNamed("detected.wav", waitForCompletion: false)
+                        
+            // Bu sesleri sırasıyla oynat:
+            run(SKAction.sequence([shatterSound, waitAction, detectedVoice]))
+            
             triggerGameOver()
         }
     }
