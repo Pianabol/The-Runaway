@@ -1,7 +1,7 @@
 # Cyber Attack 
 
 <p align="center">
-  <img src="https://via.placeholder.com/150x150?text=Cyber+Attack+Icon" alt="Cyber Attack Icon" width="150" height="150" style="border-radius: 22%;">
+  <img src="screenshots/appIcon.png" alt="Cyber Attack Icon" width="150" height="150" style="border-radius: 22%;">
 </p>
 
 <p align="center">
@@ -60,7 +60,7 @@ This project demonstrates advanced iOS game development techniques:
 
 ###  Developer
 
-Developed with  by ** Furkan Tuç **.
+Developed with  by Furkan Tuç.
 <br>
 <p align="center">
   <small><i>This project was developed with the assistance of Artificial Intelligence tools.</i></small>
