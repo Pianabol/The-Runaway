@@ -60,7 +60,7 @@ This project demonstrates advanced iOS game development techniques:
 
 ###  Developer
 
-Developed with  by Furkan Tuç.
+Developed by Furkan Tuç.
 <br>
 <p align="center">
   <small><i>This project was developed with the assistance of Artificial Intelligence tools.</i></small>
